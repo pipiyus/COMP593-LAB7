@@ -8,6 +8,10 @@ Usage:
 """
 import os
 from create_db import db_path, script_dir
+import csv 
+import sqlite3
+import pandas as pd
+
 
 def main():
     old_people_list = get_old_people()
@@ -24,7 +28,18 @@ def get_old_people():
     """
     # TODO: Create function body
     # Hint: See example code in lab instructions entitled "Getting People Data from the Database"
-    return
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    old_people_list = []
+    try:
+        cur.execute("SELECT name, age FROM people WHERE age >= 50")
+        old_people_list = cur.fetchall()
+    except sqlite3.Error as e:
+        print(f"Error fetching old people data: {e}")
+    finally:
+        conn.close()
+    return old_people_list
+    
 
 def print_name_and_age(name_and_age_list):
     """Prints name and age of all people in provided list
