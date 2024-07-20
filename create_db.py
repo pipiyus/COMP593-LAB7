@@ -44,7 +44,21 @@ def populate_people_table():
     # TODO: Create function body
     # Hint: See example code in lab instructions entitled "Inserting Data into a Table"
     # Hint: See example code in lab instructions entitled "Working with Faker"
-    return
-
+    
+    fake = Faker()
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cur = conn.cursor()
+            for _ in range(200):
+                name = fake.name()
+                age = fake.random_int(min=18, max=100)
+                location = fake.city()
+                cur.execute("INSERT INTO people (name, age, location) VALUES (?, ?, ?)",
+                            (name, age, location))
+            conn.commit()
+        print("Data inserted into 'people' table successfully.")
+    except sqlite3.Error as e:
+        print(f"Error inserting data: {e}")
+        
 if __name__ == '__main__':
    main()
