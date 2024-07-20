@@ -61,7 +61,12 @@ def save_name_and_age_to_csv(name_and_age_list, csv_path):
     """
     # TODO: Create function body
     # Hint: In Lab 3, we converted a list of tuples into a pandas DataFrame and saved it to a CSV file
-    return
+    df = pd.DataFrame(name_and_age_list, columns=['NAME', 'AGE'])
+    try:
+        df.to_csv(csv_path, index=False)
+        print(f"Saved old people data to {csv_path}")
+    except IOError as e:
+        print(f"Error saving to CSV: {e}")
 
 if __name__ == '__main__':
    main()
