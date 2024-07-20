@@ -7,6 +7,9 @@ Usage:
  python create_db.py
 """
 import os
+import sqlite3
+from faker import Faker
+
 
 # Determine the path of the database
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -20,7 +23,21 @@ def create_people_table():
     """Creates the people table in the database"""
     # TODO: Create function body
     # Hint: See example code in lab instructions entitled "Creating a Table"
-    return
+    sql_create_table = """
+        CREATE TABLE IF NOT EXISTS people (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            age INTEGER,
+            location TEXT
+        )
+    """
+    try:
+        with sqlite3.connect(db_path) as conn:
+            conn.execute(sql_create_table)
+        print("Table 'people' created successfully.")
+    except sqlite3.Error as e:
+        print(f"Error creating table: {e}")
+        
 
 def populate_people_table():
     """Populates the people table with 200 fake people"""
